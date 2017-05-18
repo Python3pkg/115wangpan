@@ -1,4 +1,4 @@
-from __future__ import print_function, absolute_import
+
 import datetime
 import errno
 import os
@@ -17,7 +17,7 @@ if PY3:
     txt_type = str
 else:
     bin_type = str
-    txt_type = unicode
+    txt_type = str
 
 str_types = (bin_type, txt_type)
 
@@ -25,7 +25,7 @@ str_types = (bin_type, txt_type)
 def get_timestamp(length):
     """Get a timestamp of `length` in string"""
     s = '%.6f' % time.time()
-    whole, frac = map(int, s.split('.'))
+    whole, frac = list(map(int, s.split('.')))
     res = '%d%d' % (whole, frac)
     return res[:length]
 

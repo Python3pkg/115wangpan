@@ -23,7 +23,7 @@ DOWNLOADS_DIR = pjoin(TEST_DIR, 'downloads')
 
 # This torrent's directory contains a single file
 TEST_TORRENT1 = {
-    'filename': pjoin(DATA_DIR, u'SAOII_10.torrent'),
+    'filename': pjoin(DATA_DIR, 'SAOII_10.torrent'),
     'info_hash': '6bcc605d8fd8629b4df92202d554e5812e78df25',
 }
 
@@ -38,7 +38,7 @@ TEST_TORRENT1 = {
 # - Cover.jpg
 
 TEST_TORRENT2 = {
-    'filename': pjoin(DATA_DIR, u'Rozen_Maiden_OST.torrent'),
+    'filename': pjoin(DATA_DIR, 'Rozen_Maiden_OST.torrent'),
     'info_hash': 'd1fc55cc7547881884d01c56ffedd92d39d48847',
 }
 

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from __future__ import print_function, absolute_import
+
 
 import humanize
 import inspect
@@ -20,7 +20,7 @@ from homura import download
 if PY3:
     from http import cookiejar as cookielib
 else:
-    import cookielib
+    import http.cookiejar
 
 USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) \
 AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.94 Safari/537.36'
@@ -29,13 +29,13 @@ LOGOUT_URL = 'http://passport.115.com/?ac=logout'
 CHECKPOINT_URL = 'http://passport.115.com/?ct=ajax&ac=ajax_check_point'
 
 
-class RequestsLWPCookieJar(cookielib.LWPCookieJar, RequestsCookieJar):
+class RequestsLWPCookieJar(http.cookiejar.LWPCookieJar, RequestsCookieJar):
     """:class:`requests.cookies.RequestsCookieJar` compatible
     :class:`cookielib.LWPCookieJar`"""
     pass
 
 
-class RequestsMozillaCookieJar(cookielib.MozillaCookieJar, RequestsCookieJar):
+class RequestsMozillaCookieJar(http.cookiejar.MozillaCookieJar, RequestsCookieJar):
     """:class:`requests.cookies.RequestsCookieJar` compatible
     :class:`cookielib.MozillaCookieJar`"""
     pass
@@ -257,7 +257,7 @@ class API(object):
 
     def save_cookies(self, ignore_discard=True, ignore_expires=True):
         """Save cookies to the file :attr:`.API.cookies_filename`"""
-        if not isinstance(self.cookies, cookielib.FileCookieJar):
+        if not isinstance(self.cookies, http.cookiejar.FileCookieJar):
             m = 'Cookies must be a cookielib.FileCookieJar object to be saved.'
             raise APIError(m)
         self.cookies.save(ignore_discard=ignore_discard,
@@ -919,7 +919,7 @@ class API(object):
             if not proapi:
                 return res.content['file_url']
             else:
-                fid = res.content['data'].keys()[0]
+                fid = list(res.content['data'].keys())[0]
                 return res.content['data'][fid]['url']['url']
         else:
             raise RequestFailure('Failed to get download URL.')
@@ -1081,7 +1081,7 @@ class Base(object):
             if PY3:
                 return self.__unicode__()
             else:
-                return unicode(self).encode('utf-8')
+                return str(self).encode('utf-8')
         return txt_type('%s object' % self.__class__.__name__)
 
 
@@ -1121,7 +1121,7 @@ class Passport(Base):
 
     def _vcode(self):
         s = '%.6f' % time.time()
-        whole, frac = map(int, s.split('.'))
+        whole, frac = list(map(int, s.split('.')))
         res = '%.8x%.5x' % (whole, frac)
         return res
 
